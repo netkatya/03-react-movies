@@ -7,6 +7,7 @@ import type { Movie } from "../types/movie";
 import { fetchMovies } from "../services/movieService";
 import MovieGrid from "./MovieGrid";
 import css from './App.module.css';
+import MovieModal from "./MovieModal";
 
 const App = () => {
     const [movies, setMovies] = useState<Movie[]>([]);

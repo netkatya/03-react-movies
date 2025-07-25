@@ -12,7 +12,7 @@ export const fetchMovies = async (query: string): Promise<Movie[]> => {
     const config = {
         params: { query },
         headers: {
-            Autorisation: `Bearer ${myKey}`
+            Authorization: `Bearer ${myKey}`
         }
     }
     const response: AxiosResponse<FetchMoviesResponse> = await axios.get(BASE_URL, config);
