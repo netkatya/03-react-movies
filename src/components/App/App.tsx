@@ -1,13 +1,13 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import SearchBar from "./SearchBar";
-import Loader from "./Loader";
-import ErrorMessage from "./ErrorMessage";
-import type { Movie } from "../types/movie";
-import { fetchMovies } from "../services/movieService";
-import MovieGrid from "./MovieGrid";
+import SearchBar from "../SearchBar/SearchBar";
+import Loader from "../Loader/Loader";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import type { Movie } from "../../types/movie";
+import { fetchMovies } from "../../services/movieService";
+import MovieGrid from "../MovieGrid/MovieGrid";
 import css from './App.module.css';
-import MovieModal from "./MovieModal";
+import MovieModal from "../MovieModal/MovieModal";
 
 const App = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
