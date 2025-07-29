@@ -1,6 +1,6 @@
 import css from './MovieModal.module.css';
 import type { Movie } from '../../types/movie';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 
@@ -9,39 +9,43 @@ interface MovieModalProps {
     onClose: () => void;
 }
 
-const modalRoot = document.getElementById('modal-root') as HTMLElement;
-if (!modalRoot) {
-    throw new Error('Modal root element not found');
-}
+
 
 const MovieModal = ({ movie, onClose }: MovieModalProps) => {
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
+  const backdropRef = useRef<HTMLDivElement>(null);
 
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+      
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown)
+    };
+  }, [onClose]);
+
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+            if (e.target === backdropRef.current) {
                 onClose();
             }
         }
 
-        const handleClickOutside = (e: MouseEvent) => {
-            if ((e.target as HTMLElement).classList.contains(css.backdrop)) {
-                onClose();
-            }
+  const modalRoot = document.getElementById('modal-root');
+  if (!modalRoot) {
+    console.error('modal-root not found')
+    return null;
         }
-
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('click', handleClickOutside);
-
-        return () => {
-            document.body.style.overflow = '';
-            window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('click', handleClickOutside);
-        };
-    }, [onClose]);
+;
 
     return createPortal(
-        <div className={css.backdrop} role="dialog" aria-modal="true">
+        <div className={css.backdrop} role="dialog" aria-modal="true" onClick={handleClickOutside} ref={backdropRef}> 
           <div className={css.modal}>
             <button
               className={css.closeButton}

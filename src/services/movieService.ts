@@ -1,4 +1,4 @@
-import axios, { type AxiosResponse } from "axios";
+import axios from "axios";
 import type { Movie } from "../types/movie";
 
 const BASE_URL = 'https://api.themoviedb.org/3/search/movie';
@@ -15,6 +15,6 @@ export const fetchMovies = async (query: string): Promise<Movie[]> => {
             Authorization: `Bearer ${myKey}`
         }
     }
-    const response: AxiosResponse<FetchMoviesResponse> = await axios.get(BASE_URL, config);
+    const response = await axios.get<FetchMoviesResponse>(BASE_URL, config);
     return response.data.results;
 }
